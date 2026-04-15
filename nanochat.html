@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+
+window.addEventListener("load", async () => {
+    if ("LanguageModel" in window) {
+        const available = await LanguageModel.availability({
+            expectedInputs: [{type: 'text', languages: ['en']}],
+            expectedOutputs: [{type: 'text', languages: ['en']}],
+        });
+        if (available !== 'unavailable') {
+            const session = await LanguageModel.create();
+
+            // Prompt the model and stream the result:
+            console.log("Yes");
+            document.getElementById("send").addEventListener("click", async () => {
+                const msg = document.getElementById("inp").value;
+                document.getElementById("inp").value = "";
+                console.log("Sending " + msg);
+                const user = document.createElement("div");
+                user.className="user";
+                user.textContent = msg;
+                const messages = document.getElementById("messages");
+                messages.appendChild(user);
+                const assistant = document.createElement("div");
+                assistant.className = "assistant";
+                messages.appendChild(assistant);
+                const stream = session.promptStreaming(msg);
+                for await (const chunk of stream) {
+                    assistant.textContent += chunk;
+                }
+            });
+
+
+        } else {
+            document.getElementById("error").textContent = "Not available";
+        }
+    } else {
+        document.getElementById("error").textContent = "Not available";
+    }
+
+});
+</script>
+<style>
+body {
+    margin: 2em;
+}
+#messages {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#messages > div {
+    margin-bottom: 1em;
+    background: #eee;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    align-self: flex-start;
+    display: inline-block;
+    max-width: 60%;
+}
+#messages > div.user {
+    align-self: flex-end;
+    background: #bbf;
+}
+#inp {
+    display: block;
+}
+
+</style>
+</head>
+<body>
+<div id="error">
+
+</div>
+
+<div id="messages">
+
+</div>
+<textarea id="inp"></textarea>
+<button id="send">Send</button>
+</body>
+</html>
