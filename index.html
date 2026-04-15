@@ -15,6 +15,8 @@ window.addEventListener("load", async () => {
 
             // Prompt the model and stream the result:
             console.log("Yes");
+            document.getElementById("controls").style.display = "block";
+
             document.getElementById("send").addEventListener("click", async () => {
                 const msg = document.getElementById("inp").value;
                 document.getElementById("inp").value = "";
@@ -37,10 +39,10 @@ window.addEventListener("load", async () => {
 
 
         } else {
-            document.getElementById("error").textContent = "Not available";
+            document.getElementById("error").textContent = "Not available in this browser";
         }
     } else {
-        document.getElementById("error").textContent = "Not available";
+        document.getElementById("error").textContent = "Not available in this browser";
     }
 
 });
@@ -76,14 +78,13 @@ button {
 </style>
 </head>
 <body>
-<div id="error">
+<div id="error"></div>
 
+<div id="messages"></div>
+
+<div id="controls" style="display: none;">
+    <textarea id="inp"></textarea>
+    <button id="send">Send</button>
 </div>
-
-<div id="messages">
-
-</div>
-<textarea id="inp"></textarea>
-<button id="send">Send</button>
 </body>
 </html>
