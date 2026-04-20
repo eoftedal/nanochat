@@ -39,10 +39,10 @@ window.addEventListener("load", async () => {
 
 
         } else {
-            document.getElementById("error").textContent = "Not available in this browser";
+            document.getElementById("error").style.display = "block";
         }
     } else {
-        document.getElementById("error").textContent = "Not available in this browser";
+        document.getElementById("error").style.display = "block";
     }
 
 });
@@ -75,10 +75,17 @@ body {
 button {
     margin-top: 0.25em;
 }
+.error {
+    display: none;
+}
 </style>
 </head>
 <body>
-<div id="error"></div>
+<div id="error">
+    Only works on Chrome for desktop. Could not load model. You might have to set:
+<pre>chrome://flags/#optimization-guide-on-device-model
+chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</pre>
+</div>
 
 <div id="messages"></div>
 
