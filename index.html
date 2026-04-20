@@ -11,7 +11,13 @@ window.addEventListener("load", async () => {
             expectedOutputs: [{type: 'text', languages: ['en']}],
         });
         if (available !== 'unavailable') {
-            const session = await LanguageModel.create();
+            const session = await LanguageModel.create({
+            monitor(m) {
+                m.addEventListener('downloadprogress', (e) => {
+                console.log(`Downloaded ${e.loaded * 100}%`);
+                });
+            },
+            });
 
             // Prompt the model and stream the result:
             console.log("Yes");
@@ -75,7 +81,7 @@ body {
 button {
     margin-top: 0.25em;
 }
-.error {
+#error {
     display: none;
 }
 </style>
