@@ -5,11 +5,13 @@
 <script>
 
 window.addEventListener("load", async () => {
-    if ("LanguageModel" in window) {
-        const available = await LanguageModel.availability({
-            expectedInputs: [{type: 'text', languages: ['en']}],
-            expectedOutputs: [{type: 'text', languages: ['en']}],
-        });
+    document.getElementById("start").addEventListener("click", async () => {
+        document.getElementById("start").style.display = "none";
+        if ("LanguageModel" in window) {
+            const available = await LanguageModel.availability({
+                expectedInputs: [{type: 'text', languages: ['en']}],
+                expectedOutputs: [{type: 'text', languages: ['en']}],
+            });
         if (available !== 'unavailable') {
             const session = await LanguageModel.create({
                 monitor(m) {
@@ -52,7 +54,7 @@ window.addEventListener("load", async () => {
     } else {
         document.getElementById("error").style.display = "block";
     }
-
+    });
 });
 </script>
 <style>
@@ -89,6 +91,7 @@ button {
 </style>
 </head>
 <body>
+<button id="start">Start the chat</button>
 <div id="error">
     Only works on Chrome for desktop. Could not load model. You might have to set:
 <pre>chrome://flags/#optimization-guide-on-device-model
