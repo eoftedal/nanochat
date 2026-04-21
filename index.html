@@ -12,15 +12,17 @@ window.addEventListener("load", async () => {
         });
         if (available !== 'unavailable') {
             const session = await LanguageModel.create({
-            monitor(m) {
-                m.addEventListener('downloadprogress', (e) => {
-                console.log(`Downloaded ${e.loaded * 100}%`);
-                });
-            },
+                monitor(m) {
+                    m.addEventListener('downloadprogress', (e) => {
+                        if (e.loaded < 1) {
+                            document.getElementById("messages").textContent = `Model downloaded ${e.loaded * 100}%`;
+                        } else {
+                            document.getElementById("messages").textContent = `Ready. Model downloaded`;
+                        }
+                    });
+                },
             });
 
-            // Prompt the model and stream the result:
-            console.log("Yes");
             document.getElementById("controls").style.display = "block";
 
             document.getElementById("send").addEventListener("click", async () => {
